@@ -3,6 +3,8 @@ import pandas as pd
 
 def get_fibo_signals(data):
     tickerData = data.head(100)
+    if len(tickerData.index) < 20:
+        return None
     supremum_bar = tickerData['High'].idxmax()
     supremum = tickerData['High'].max()
     infimum_bar = tickerData['Low'].idxmin()
