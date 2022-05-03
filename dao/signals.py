@@ -29,17 +29,42 @@ def save_signals(signals):
 
 def read_signals():
     query = """
-        SELECT * from "signals" where published = 0
+        SELECT * from "signals"
     """
     sql_query = pd.read_sql_query(query, engine)
-    df = pd.DataFrame(sql_query, columns=['Ticker', 'Datetime', 'Expert',
-                                          'Trend', 'Criteria', 'Description', 'signals_id'])
-    messages = pd.DataFrame(data=[df.agg(lambda x: 'Ticker=' + x['Ticker']
-                                                   + ' Datetime=' + str(x['Datetime'])
-                                                   + ' Expert=' + x['Expert']
-                                                   + ' Trend=' + str(x['Trend'])
-                                                   + ' Description=' + x['Description'], axis=1).T, df['signals_id']],
-                            columns=['messages', 'signals_id'])
+    sql_query['messages'] = sql_query.agg(lambda x: 'Ticker=' + x['Ticker']
+                                                    + ' Datetime=' + str(x['Datetime'])
+                                                    + ' Expert=' + x['Expert']
+                                                    + ' Trend=' + str(x['Trend'])
+                                                    + ' Description=' + x['Description'], axis=1)
+    messages = sql_query[['signals_id', 'messages']]
     # унификация публикуемых сообщений
 
     return messages
+
+
+def mark_as_published(signal_id):
+    with engine.begin() as conn:
+        query = f"""
+        UPDATE "signals" 
+        set published = 1 
+        where signals_id = {signal_id}
+    """
+        result = conn.execute(query)
+        print(result.rowcount, "Record updated successfully into Signals")
+
+
+def get_saved_signals(signal):
+    trend = signal['Trend']
+    datetime = signal['Datetime']
+    ticker = signal['Ticker']
+    with engine.begin() as conn:
+        query = f"""
+        select count(*) from "signals" 
+        where "Trend" = '{trend}'
+            and "Ticker" = '{ticker}'
+            and DATE_PART('day', "signals"."Datetime"::timestamp - '{datetime}'::timestamp) < 1
+    """
+        result = conn.execute(query)
+        count = result.fetchone()[0]
+        return count

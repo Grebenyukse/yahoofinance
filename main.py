@@ -13,4 +13,4 @@ from service.signals import update_signals, publish_alerts
 #     time.sleep(1)
 
 
-publish_alerts()
+update_signals()
