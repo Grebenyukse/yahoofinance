@@ -23,6 +23,8 @@ def update_signals():
 # читаем сигнал, публикуем, помечаем как опубликованный
 def publish_alerts():
     messages = read_signals()
+    if messages.empty:
+        return
     for index, x in messages.iterrows():
         send_alert(x['messages'])
         mark_as_published(x['signals_id'])

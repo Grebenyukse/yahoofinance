@@ -60,7 +60,7 @@ def get_fibo_signals(data):
             j += 1
 
     columns = ['Ticker', 'Datetime', 'Expert', 'Trend', 'Criteria', 'Description']
-    if not isbroken_382 and touches_382 > 2 or True:
+    if not isbroken_382 and touches_382 > 2:
         return pd.DataFrame(data=[[tickerData.iloc[0]['Ticker'],
                              tickerData.iloc[last_extremum]['Datetime'],
                              'Fibbo touch 38.2',
