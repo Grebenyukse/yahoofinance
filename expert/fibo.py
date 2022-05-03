@@ -1,5 +1,7 @@
 import pandas as pd
 
+from plot.plot import plot_candlesticks
+
 
 def get_fibo_signals(data):
     tickerData = data.head(100)
@@ -45,22 +47,26 @@ def get_fibo_signals(data):
         j = 0
         while j < last_extremum:
             if trend == 1:
-                if tickerData.iloc[i]['Low'] - fibo_382 < sigma:
+                if tickerData.iloc[j]['Low'] - fibo_382 < sigma:
                     touches_382 += 1
                     j += 2
-                if tickerData.iloc[i]['Low'] - fibo_618 < sigma:
+                if tickerData.iloc[j]['Low'] - fibo_618 < sigma:
                     touches_681 += 1
                     j += 2
             if trend == -1:
-                if fibo_382 - tickerData.iloc[i]['High'] < sigma:
+                if fibo_382 - tickerData.iloc[j]['High'] < sigma:
                     touches_382 += 1
                     j += 2
-                if fibo_618 - tickerData.iloc[i]['High'] < sigma:
+                if fibo_618 - tickerData.iloc[j]['High'] < sigma:
                     touches_681 += 1
                     j += 2
             j += 1
 
     columns = ['Ticker', 'Datetime', 'Expert', 'Trend', 'Criteria', 'Description']
+    if (not isbroken_382 and touches_382 >= 2) or (not isbroken_618 and touches_681 >= 2):
+        data['fibo_382'] = data['Close'].agg(lambda x: fibo_382)
+        data['fibo_618'] = data['Close'].agg(lambda x: fibo_618)
+        plot_candlesticks(data)
     if not isbroken_382 and touches_382 >= 2:
         return pd.DataFrame(data=[[tickerData.iloc[0]['Ticker'],
                                    tickerData.iloc[last_extremum]['Datetime'],

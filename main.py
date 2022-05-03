@@ -17,5 +17,5 @@ from service.signals import update_signals, publish_alerts
 # print('start update signals')
 update_signals()
 # print('start sending alerts')
-publish_alerts()
+# publish_alerts()
 # print('finish mf')
