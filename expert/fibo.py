@@ -25,19 +25,20 @@ def get_fibo_signals(data):
 
     touches_382 = 0
     touches_681 = 0
-    sigma = 0
+    sigma = range_size * 0.03  # погрешность определения сигнала 3%
+    alpha = range_size * 0.01  # погрешность определения пробоя 1%
 
     # check fibo levels is broken
     for i in range(0, last_extremum):
         if trend == 1:
-            if tickerData.iloc[i]['Low'] < fibo_382:
+            if tickerData.iloc[i]['Low'] < fibo_382 - alpha:
                 isbroken_382 = True
-            if tickerData.iloc[i]['Low'] < fibo_618:
+            if tickerData.iloc[i]['Low'] < fibo_618 - alpha:
                 isbroken_618 = True
         if trend == -1:
-            if tickerData.iloc[i]['High'] > fibo_382:
+            if tickerData.iloc[i]['High'] > fibo_382 + alpha:
                 isbroken_382 = True
-            if tickerData.iloc[i]['High'] > fibo_618:
+            if tickerData.iloc[i]['High'] > fibo_618 + alpha:
                 isbroken_618 = True
         # count touches
 
@@ -60,20 +61,20 @@ def get_fibo_signals(data):
             j += 1
 
     columns = ['Ticker', 'Datetime', 'Expert', 'Trend', 'Criteria', 'Description']
-    if not isbroken_382 and touches_382 > 2:
+    if not isbroken_382 and touches_382 >= 2:
         return pd.DataFrame(data=[[tickerData.iloc[0]['Ticker'],
-                             tickerData.iloc[last_extremum]['Datetime'],
-                             'Fibbo touch 38.2',
-                             trend,
-                             touches_382,
-                             'touches_382=' + str(touches_382)]],
+                                   tickerData.iloc[last_extremum]['Datetime'],
+                                   'Fibbo touch 38.2',
+                                   trend,
+                                   touches_382,
+                                   'touches_382=' + str(touches_382)]],
                             columns=columns)
-    if not isbroken_618 and touches_681 > 2:
+    if not isbroken_618 and touches_681 >= 2:
         return pd.DataFrame(data=[[tickerData.iloc[0]['Ticker'],
-                             tickerData.iloc[last_extremum]['Datetime'],
-                             'Fibo touch 61.8',
-                             trend,
-                             touches_681,
-                             'touches_681=' + str(touches_681)]],
+                                   tickerData.iloc[last_extremum]['Datetime'],
+                                   'Fibo touch 61.8',
+                                   trend,
+                                   touches_681,
+                                   'touches_681=' + str(touches_681)]],
                             columns=columns)
     return None

@@ -29,13 +29,13 @@ def save_signals(signals):
 
 def read_signals():
     query = """
-        SELECT * from "signals"
+        SELECT * from "signals" where published = 0
     """
     sql_query = pd.read_sql_query(query, engine)
     if sql_query.empty:
         return sql_query
-    sql_query['messages'] = sql_query.agg(lambda x: 'Ticker=' + x['Ticker']
-                                                    + ' Datetime=' + str(x['Datetime'])
+    sql_query['messages'] = sql_query.agg(lambda x: 'Ticker=https://finance.yahoo.com/chart/' + x['Ticker']
+                                                    + ' Extremum Datetime=' + str(x['Datetime'])
                                                     + ' Expert=' + x['Expert']
                                                     + ' Trend=' + str(x['Trend'])
                                                     + ' Description=' + x['Description'], axis=1)
