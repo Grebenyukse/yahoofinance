@@ -27,5 +27,35 @@ def plot_candlesticks(df, names=('Datetime', 'Open', 'High', 'Low', 'Close', 'fi
             color='Red',
         )
     )
+
+    candle.update_xaxes(
+        rangeslider_visible=True,
+        rangebreaks=[
+            # NOTE: Below values are bound (not single values), ie. hide x to y
+            dict(bounds=["sat", "mon"]),  # hide weekends, eg. hide sat to before mon
+            dict(bounds=[16, 9], pattern="hour"),  # hide hours outside of 9.30am-4pm
+            # dict(values=["2019-12-25", "2020-12-24"])  # hide holidays (Christmas and New Year's, etc)
+        ]
+    )
     candle.show()
     # oleg
+
+
+def plot_test(df, names=('Open', 'High', 'Low', 'Close')):
+    stocks = df.copy()
+    Open, High, Low, Close = names
+    candle = go.Figure(data=[go.Candlestick(x=stocks.index, name='Trade',
+                                            open=stocks[Open],
+                                            high=stocks[High],
+                                            low=stocks[Low],
+                                            close=stocks[Close]), ])
+    candle.update_xaxes(
+        rangeslider_visible=True,
+        rangebreaks=[
+            # NOTE: Below values are bound (not single values), ie. hide x to y
+            dict(bounds=["sat", "mon"]),  # hide weekends, eg. hide sat to before mon
+            dict(bounds=[16, 9], pattern="hour"),  # hide hours outside of 9.30am-4pm
+            # dict(values=["2019-12-25", "2020-12-24"])  # hide holidays (Christmas and New Year's, etc)
+        ]
+    )
+    candle.show()
