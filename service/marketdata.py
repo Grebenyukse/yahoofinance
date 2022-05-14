@@ -5,7 +5,8 @@ from service.tickers import get_chunked_tickers
 
 # Обновляем информацию по всем символам
 def update_market_info():
-    tickers = get_chunked_tickers()
+    # tickers = get_chunked_tickers()
+    tickers =['MSFT AAPL']
     for tickets in tickers:
         prices = load(tickets)
         update_market_data(prices)

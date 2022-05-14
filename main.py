@@ -1,5 +1,6 @@
 import schedule
 import time
+from dao.setupschema import clear_schema, setup_schema
 
 from service.marketdata import update_market_info
 from service.signals import update_signals, publish_alerts
@@ -12,10 +13,14 @@ from service.signals import update_signals, publish_alerts
 #     schedule.run_pending()
 #     time.sleep(1)
 
-# print('start update market info')
+# First launch
+# clear_schema()
+# setup_schema()
+
+print('start update market info')
 # update_market_info()
 # print('start update signals')
-update_signals()
+# update_signals()
 # print('start sending alerts')
 # publish_alerts()
-# print('finish mf')
+print('finish mf')
