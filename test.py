@@ -1,3 +1,5 @@
 import pandas as pd
 
-pd.read_excel("")
+
+tickers = pd.DataFrame(data=['MSFT'], columns=['Ticker'])
+print('oleg')

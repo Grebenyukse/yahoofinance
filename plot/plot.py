@@ -1,5 +1,7 @@
 import plotly.graph_objects as go
-
+import plotly.io as pio
+pio.renderers
+pio.renderers.default = "notebook_connected"
 
 def plot_candlesticks(df, names=('Datetime', 'Open', 'High', 'Low', 'Close', 'fibo_382', 'fibo_618')):
     stocks = df.copy()

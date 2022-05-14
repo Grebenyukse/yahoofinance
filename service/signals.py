@@ -1,3 +1,5 @@
+import pandas as pd
+
 from dao.marketdata import fetch_market_data_for_ticker
 from dao.signals import save_signals, read_signals, mark_as_published, get_saved_signals
 from dao.tickers import get_ticker_names
@@ -8,8 +10,11 @@ from expert.fibo import get_fibo_signals
 # Загружаем информацию о тикете, проверяем сигнал, постим сигнал в таблицу
 def update_signals():
     tickers = get_ticker_names()
+    tickers = pd.DataFrame(data=['MSFT'], columns=['Ticker'])
     for ticker in tickers['Ticker']:
         data = fetch_market_data_for_ticker(ticker)
+        if not data.empty:
+            print('not empty')
         signals = get_fibo_signals(data)
         if signals is None:
             continue

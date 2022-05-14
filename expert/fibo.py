@@ -63,7 +63,7 @@ def get_fibo_signals(data):
             j += 1
 
     columns = ['Ticker', 'Datetime', 'Expert', 'Trend', 'Criteria', 'Description']
-    if (not isbroken_382 and touches_382 >= 2) or (not isbroken_618 and touches_681 >= 2):
+    if (not isbroken_382 and touches_382 >= 2) or (not isbroken_618 and touches_681 >= 2) or True:
         data['fibo_382'] = data['Close'].agg(lambda x: fibo_382)
         data['fibo_618'] = data['Close'].agg(lambda x: fibo_618)
         plot_candlesticks(data)

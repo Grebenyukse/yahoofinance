@@ -8,3 +8,5 @@
 *.json
 *.suo
 *.cfg
+*.рус
+/.venv
