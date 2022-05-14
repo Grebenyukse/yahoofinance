@@ -1,6 +1,6 @@
 import pandas as pd
 
-from plot.plot import plot_candlesticks
+from plot.render import plot_candlesticks
 
 
 def get_fibo_signals(data):

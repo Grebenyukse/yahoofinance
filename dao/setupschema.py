@@ -1,5 +1,3 @@
-
-
 from dao.config import engine
 
 def setup_schema():

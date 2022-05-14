@@ -28,3 +28,4 @@ def plot_candlesticks(df, names=('Datetime', 'Open', 'High', 'Low', 'Close', 'fi
         )
     )
     candle.show()
+    # oleg
