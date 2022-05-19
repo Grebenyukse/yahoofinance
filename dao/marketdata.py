@@ -1,3 +1,4 @@
+from ast import Tuple
 import pandas as pd
 
 from dao.config import engine
@@ -39,10 +40,26 @@ def fetch_market_data_for_ticker(ticker):
         query = f"""
         SELECT * FROM "EURUSD" t1 where t1."Ticker" = '{ticker}' 
         ORDER BY "Datetime" desc
-        LIMIT 10000
         """
         sql_query = pd.read_sql_query(query, engine)
         df = pd.DataFrame(sql_query, columns=['Ticker', 'Datetime', 'Open', 'High', 'Low', 'Close'])
         return df
     except Exception as error:
         print("Failed to read list of tickers", error)
+
+def get_last_loaded_date(tickerList):
+    params = tuple(tickerList)
+    with engine.begin() as conn:
+        query = f"""
+        select min(t2."Datetime") from  
+            (SELECT "Ticker", max("Datetime") as "Datetime" from "EURUSD"
+            where "Ticker" in {params}
+            group by "Ticker") as t2
+        group by t2."Datetime"
+        """
+        response = conn.execute(query, engine)
+        row = response.fetchone()
+        if row is None:
+            return None
+        result = row['min'] 
+        return result

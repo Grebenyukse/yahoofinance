@@ -1,7 +1,8 @@
 import yfinance as yf
+import datetime as datetime
 
 
-def load(ticker= 'MSFT'):
+def load(ticker= 'MSFT', startTime='2022-01-01'):
     data = yf.download(  # or pdr.get_data_yahoo(...
         tickers = ticker,
             # List of tickers to download
@@ -11,10 +12,10 @@ def load(ticker= 'MSFT'):
         interval='1h',
             # Valid intervals: 1m,2m,5m,15m,30m,60m,90m,1h,1d,5d,1wk,1mo,3mo
             # Intraday data cannot extend last 60 days
-        start= '2022-01-01',
+        start= startTime,
             # Download start date string (YYYY-MM-DD) or _datetime.
             # Default is 1900-01-01
-        end= '2022-04-30',
+        end= datetime.datetime.now().strftime("%Y-%m-%d"),
             # Download end date string (YYYY-MM-DD) or _datetime.
             # Default is now
         group_by='ticker',

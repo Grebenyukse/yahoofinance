@@ -1,8 +1,8 @@
+from datetime import datetime
 import pandas as pd
+from dao.marketdata import get_last_loaded_date
 from exchange.yahoo import load
+import datetime as datetime
 
-tickers = pd.DataFrame(data=['MSFT'], columns=['Ticker'])
+datetime.datetime.now()
 print('oleg')
-
-prices = load('MSFT')
-print('ivan')
