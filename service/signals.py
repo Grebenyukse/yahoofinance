@@ -1,10 +1,15 @@
 import pandas as pd
+import os
 
 from dao.marketdata import fetch_market_data_for_ticker
 from dao.signals import save_signals, read_signals, mark_as_published, get_saved_signals
 from dao.tickers import get_ticker_names
-from exchange.telegram import send_alert
+from exchange.telegram import send_alert, send_photo
 from expert.fibo import get_fibo_signals
+from plot import render
+from plot.render import plot_candlesticks
+
+SCREENSHOT_PATH = "C:\\Users\\18950416\\pet\\yahoofinance\\plot\\images\\fig.jpeg"
 
 
 # Загружаем информацию о тикете, проверяем сигнал, постим сигнал в таблицу
@@ -31,6 +36,12 @@ def publish_alerts():
     if messages.empty:
         return
     for index, x in messages.iterrows():
-        send_alert(x['messages'])
-        mark_as_published(x['signals_id'])
+        market_data = fetch_market_data_for_ticker(x['Ticker'])
+        render_data = get_fibo_signals(market_data, True)
+        data, fibo_xaxe, fibo_382, fibo_618, markers, price_open, stop_loss, take_profit, infimum, supremum = render_data
+        plot_candlesticks(data, fibo_xaxe, fibo_382, fibo_618, markers, price_open, stop_loss, take_profit, infimum, supremum)
+        send_photo(SCREENSHOT_PATH, x['messages'])
+        os.remove(SCREENSHOT_PATH)
+        # mark_as_published(x['signals_id'])
+
 

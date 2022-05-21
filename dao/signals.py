@@ -39,9 +39,8 @@ def read_signals():
                                                     + ' Expert=' + x['Expert']
                                                     + ' Trend=' + str(x['Trend'])
                                                     + ' Description=' + x['Description'], axis=1)
-    messages = sql_query[['signals_id', 'messages']]
+    messages = sql_query[['signals_id', 'messages', 'Ticker']]
     # унификация публикуемых сообщений
-
     return messages
 
 
