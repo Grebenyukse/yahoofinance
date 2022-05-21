@@ -5,6 +5,7 @@ from dao.marketdata import fetch_market_data_for_ticker
 from dao.signals import save_signals, read_signals, mark_as_published, get_saved_signals
 from dao.tickers import get_ticker_names
 from exchange.telegram import send_alert, send_photo
+from exchange.yahoo import load_ticker_info
 from expert.fibo import get_fibo_signals
 from plot import render
 from plot.render import plot_candlesticks
@@ -37,6 +38,7 @@ def publish_alerts():
         return
     for index, x in messages.iterrows():
         market_data = fetch_market_data_for_ticker(x['Ticker'])
+        symbol_info = load_ticker_info(x['Ticker'])
         render_data = get_fibo_signals(market_data, True)
         data, fibo_xaxe, fibo_382, fibo_618, markers, price_open, stop_loss, take_profit, infimum, supremum = render_data
         plot_candlesticks(data, fibo_xaxe, fibo_382, fibo_618, markers, price_open, stop_loss, take_profit, infimum, supremum)

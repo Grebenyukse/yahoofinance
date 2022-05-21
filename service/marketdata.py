@@ -7,8 +7,8 @@ DEFAULT_START_DATE = '2022-01-01'
 
 # Обновляем информацию по всем символам
 def update_market_info():
-    # tickers = get_chunked_tickers()
-    tickers =['MSFT AAPL']
+    tickers = get_chunked_tickers()
+    # tickers =['MSFT AAPL']
     for tickets in tickers:
         ticketList = tickets.split(' ')
         lastUpdatedDate = get_last_loaded_date(ticketList)

@@ -10,3 +10,4 @@
 *.cfg
 *.рус
 /.venv
+/market_data_cache

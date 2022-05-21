@@ -8,6 +8,6 @@ pio.renderers.default = "browser"
 
 def get_ticker_names():
     query = """
-        select distinct "Ticker" from Tickers
+        select distinct "ticker" as "Ticker" from tickers
     """
     return pd.read_sql_query(query, engine)
