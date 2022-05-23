@@ -5,17 +5,15 @@
 
 import requests
 import telebot
+from telebot import types # для указание типов
+from exchange.config import chat_token, chat_id
 
-chat_id = '253052558'
-token = '5364460446:AAGxpCglqUunPCyEU5ziIMvHOtSedT9Cp_k'
-
-
-def send_alert(message):
-    url = 'https://api.telegram.org/bot' + token + '/sendMessage?chat_id=' + chat_id + 'parseMode=MarkdownV2&text=' + message
-    response = requests.get(url)
-    return response.json()
+bot = telebot.TeleBot(chat_token)
 
 
-def send_photo(pic, message):
-    bot = telebot.TeleBot(token)
-    bot.send_photo(chat_id=chat_id, photo=open(pic,'rb'), caption=message)
+def send_photo(pic, message, signal_id):
+    markup = types.InlineKeyboardMarkup()
+    btn1 = types.InlineKeyboardButton(callback_data='accept/' + signal_id, text="Accept")
+    btn2 = types.InlineKeyboardButton(callback_data='decline/' + signal_id, text="Decline")
+    markup.add(btn1, btn2)
+    bot.send_photo(chat_id=chat_id, photo=open(pic,'rb'), caption=message, reply_markup=markup)

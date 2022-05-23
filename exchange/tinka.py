@@ -10,7 +10,6 @@ from tinkoff.invest.caching.cache_settings import MarketDataCacheSettings
 from tinkoff.invest.services import MarketDataCache
 from tinkoff.invest.utils import now
 
-TOKEN = "t.eDmKGfqdXmwDFW9279RZc3xhYLKpuu8IP7HNhMtvU7FgQ4gIu7fAhSArpOyrNGcIImz_aW_qDgcEbryMk34I-Q"
 logging.basicConfig(format="%(asctime)s %(levelname)s:%(message)s", level=logging.DEBUG)
 
 

@@ -15,13 +15,13 @@ from service.signals import update_signals, publish_alerts
 #     schedule.run_pending()
 #     time.sleep(1)
 
-first_launch()
+# first_launch()
 
 
 print('start update market info')
 update_market_info()
 print('start update signals')
-# update_signals()
+update_signals()
 print('start sending alerts')
 publish_alerts()
 print('finish mf')
