@@ -79,7 +79,7 @@ def plot_candlesticks(df, fibo_xaxe, fibo_382, fibo_618, markers, price_open, st
     candle.update_layout(xaxis_rangeslider_visible=False)
     candle.update_xaxes(autorange="reversed")
     # candle.show()
-    candle.write_image("C:\\Users\\18950416\\pet\\yahoofinance\\plot\\images\\fig.jpeg")
+    candle.write_image("C:\\Users\\admin\\PycharmProjects\\yahoofinance\\plot\\images\\fig.jpeg")
     
 
 def plot_test(df, names=('Open', 'High', 'Low', 'Close')):

@@ -10,17 +10,15 @@ from expert.fibo import get_fibo_signals
 from plot import render
 from plot.render import plot_candlesticks
 
-SCREENSHOT_PATH = "C:\\Users\\18950416\\pet\\yahoofinance\\plot\\images\\fig.jpeg"
+SCREENSHOT_PATH = "C:\\Users\\admin\\PycharmProjects\\yahoofinance\\plot\\images\\fig.jpeg"
 
 
 # Загружаем информацию о тикете, проверяем сигнал, постим сигнал в таблицу
 def update_signals():
     tickers = get_ticker_names()
-    tickers = pd.DataFrame(data=['MSFT'], columns=['Ticker'])
+    # tickers = pd.DataFrame(data=['MSFT'], columns=['Ticker'])
     for ticker in tickers['Ticker']:
         data = fetch_market_data_for_ticker(ticker)
-        if not data.empty:
-            print('not empty')
         signals = get_fibo_signals(data)
         if signals is None:
             continue

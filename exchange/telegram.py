@@ -5,7 +5,8 @@
 
 import requests
 import telebot
-from telebot import types # для указание типов
+from telebot import types
+
 from exchange.config import chat_token, chat_id
 
 bot = telebot.TeleBot(chat_token)
@@ -13,7 +14,7 @@ bot = telebot.TeleBot(chat_token)
 
 def send_photo(pic, message, signal_id):
     markup = types.InlineKeyboardMarkup()
-    btn1 = types.InlineKeyboardButton(callback_data='accept/' + signal_id, text="Accept")
-    btn2 = types.InlineKeyboardButton(callback_data='decline/' + signal_id, text="Decline")
+    btn1 = types.InlineKeyboardButton(callback_data='accept/' + str(signal_id), text="Accept")
+    btn2 = types.InlineKeyboardButton(callback_data='decline/' + str(signal_id), text="Decline")
     markup.add(btn1, btn2)
-    bot.send_photo(chat_id=chat_id, photo=open(pic,'rb'), caption=message, reply_markup=markup)
+    bot.send_photo(chat_id=chat_id, photo=open(pic, 'rb'), caption=message, reply_markup=markup)
