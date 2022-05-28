@@ -1,18 +1,30 @@
 import requests
 import telebot
 from telebot import types # для указание типов
-from exchange.config import chat_id, chat_token
+
+chat_id = '253052558'
+chat_token = '5364460446:AAGxpCglqUunPCyEU5ziIMvHOtSedT9Cp_k'
+tinka_token = "t.eDmKGfqdXmwDFW9279RZc3xhYLKpuu8IP7HNhMtvU7FgQ4gIu7fAhSArpOyrNGcIImz_aW_qDgcEbryMk34I-Q"
 
 bot = telebot.TeleBot(chat_token)
 
 @bot.message_handler(commands=['start'])
 def start(message):
     markup = types.InlineKeyboardMarkup()
-    btn1 = types.InlineKeyboardButton(callback_data="BUY", text="BUY")
+    btn1 = types.InlineKeyboardButton(callback_data="BUY" + '/' +str(12), text="BUY/567")
     btn2 = types.InlineKeyboardButton(callback_data="SELL", text="SELL")
     markup.add(btn1, btn2)
     bot.send_message(message.chat.id, text="Привет, {0.first_name}! Я тестовый бот для твоей статьи для habr.com".format(message.from_user), reply_markup=markup)
     
+
+@bot.callback_query_handler(func=lambda call: True)    # Обработчик
+def callback_inline_first(message):
+    info = message.data
+    comand = info.spli("/")[0]
+    signal_id = info.split("/")[1]
+    print(message)
+
+
 @bot.message_handler(content_types=['text'])
 def func(message):
     if(message.text == 'accept'):
