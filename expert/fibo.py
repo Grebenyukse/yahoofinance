@@ -29,23 +29,24 @@ def get_fibo_signals(data, render=False):
     touches_681 = 0
     sigma = range_size * 0.03  # погрешность определения сигнала 3%
     alpha = range_size * 0.01  # погрешность определения пробоя 1%
-    markers = pd.DataFrame(columns=['x', 'y','color'], data=[])
+    markers_touples_382 = []
+    markers_touples_618 = []
     # check fibo levels is broken
     for i in range(0, last_extremum):
         if trend == 1:
             if tickerData.iloc[i]['Low'] < fibo_382 - alpha:
                 isbroken_382 = True
-                markers = markers.append({'x': i, 'y': tickerData.iloc[i]['Low'], 'color': 'black'}, ignore_index=True)
+                markers_touples_382.append((i, tickerData.iloc[i]['Low'], 'black'))
             if tickerData.iloc[i]['Low'] < fibo_618 - alpha:
                 isbroken_618 = True
-                markers = markers.append({'x': i, 'y': tickerData.iloc[i]['Low'], 'color': 'black'}, ignore_index=True)
+                markers_touples_618.append((i, tickerData.iloc[i]['Low'], 'black'))
         if trend == -1:
             if tickerData.iloc[i]['High'] > fibo_382 + alpha:
                 isbroken_382 = True
-                markers = markers.append({'x': i, 'y': tickerData.iloc[i]['High'], 'color': 'black'}, ignore_index=True)
+                markers_touples_382.append((i, tickerData.iloc[i]['High'], 'black'))
             if tickerData.iloc[i]['High'] > fibo_618 + alpha:
                 isbroken_618 = True
-                markers = markers.append({'x': i, 'y': tickerData.iloc[i]['High'], 'color': 'black'}, ignore_index=True)
+                markers_touples_618.append((i, tickerData.iloc[i]['High'], 'black'))
         # count touches
 
         j = 0
@@ -54,20 +55,20 @@ def get_fibo_signals(data, render=False):
                 if tickerData.iloc[j]['Low'] - fibo_382 < sigma:
                     touches_382 += 1
                     j += 2
-                    markers = markers.append({'x': j, 'y':fibo_382, 'color': 'black'}, ignore_index=True)
+                    markers_touples_382.append((j, fibo_382, 'black'))
                 if tickerData.iloc[j]['Low'] - fibo_618 < sigma:
                     touches_681 += 1
                     j += 2
-                    markers = markers.append({'x': j, 'y':fibo_618, 'color': 'black'}, ignore_index=True)
+                    markers_touples_618.append((j, fibo_618, 'black'))
             if trend == -1:
                 if fibo_382 - tickerData.iloc[j]['High'] < sigma:
                     touches_382 += 1
                     j += 2
-                    markers = markers.append({'x': j, 'y':fibo_382, 'color': 'black'}, ignore_index=True)
+                    markers_touples_382.append((j, fibo_382, 'black'))
                 if fibo_618 - tickerData.iloc[j]['High'] < sigma:
                     touches_681 += 1
                     j += 2
-                    markers = markers.append({'x': j, 'y':fibo_618, 'color': 'black'}, ignore_index=True)
+                    markers_touples_618.append((j, fibo_618, 'black'))
             j += 1
 
     columns = ['Ticker', 'Datetime', 'Expert', 'Trend', 'Criteria', 'Description']
@@ -75,9 +76,10 @@ def get_fibo_signals(data, render=False):
     price_open = None
     stop_loss = supremum if trend == 1 else infimum
     take_profit = fibo_618
-
-    if not isbroken_382 and touches_382 >= 2:
-        price_open = (stop_loss + fibo_382)/2 
+    markers = None
+    if (not isbroken_382) and (touches_382 >= 2):
+        markers = pd.DataFrame(columns=['x', 'y', 'color'], data=markers_touples_382)
+        price_open = (stop_loss + fibo_382)/2
         result_df = pd.DataFrame(data=[[tickerData.iloc[0]['Ticker'],
                                    tickerData.iloc[last_extremum]['Datetime'],
                                    'Fibbo touch 38.2',
@@ -85,7 +87,8 @@ def get_fibo_signals(data, render=False):
                                    touches_382,
                                    'touches:' + str(touches_382) + '.' + get_position_info(price_open, take_profit, stop_loss)]],
                             columns=columns)
-    if not isbroken_618 and touches_681 >= 2:
+    if (not isbroken_618) and (touches_681 >= 2):
+        markers = pd.DataFrame(columns=['x', 'y', 'color'], data=markers_touples_618)
         price_open = fibo_382
         result_df = pd.DataFrame(data=[[tickerData.iloc[0]['Ticker'],
                                    tickerData.iloc[last_extremum]['Datetime'],
@@ -95,7 +98,7 @@ def get_fibo_signals(data, render=False):
                                    'touches:' + str(touches_681) + get_position_info(price_open, take_profit, stop_loss)]],
                             columns=columns)
     if render:
-        if (not isbroken_382 and touches_382 >= 2) or (not isbroken_618 and touches_681 >= 2):
+        if ((not isbroken_382) and (touches_382 >= 2)) or ((not isbroken_618) and (touches_681 >= 2)):
             left_e = max(supremum_bar, infimum_bar)
             right_e = min(supremum_bar, infimum_bar)
             fibo_xaxe = list(range(right_e, left_e))

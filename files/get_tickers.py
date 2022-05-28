@@ -2,8 +2,9 @@ import pandas as pd
 
 from dao.config import engine
 
+
 def load_tickers():
-    data = pd.read_excel(io="C:\\Users\\18950416\\pet\\yahoofinance\\files\\tinka_tickers.xlsx",
+    data = pd.read_excel(io="C:\\Users\\admin\\PycharmProjects\\yahoofinance\\files\\tinka_tickers.xlsx",
                          sheet_name=0,
                          header=0,
                          na_filter=True,
