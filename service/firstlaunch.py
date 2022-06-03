@@ -1,9 +1,15 @@
 
-from dao.setupschema import clear_schema, setup_schema
+from dao.tickers import get_ticker_names
 from files.get_tickers import load_tickers
+import alembic.config
+alembicArgs = [
+    '--raiseerr',
+    'upgrade', 'head',
+]
+alembic.config.main(argv=alembicArgs)
 
 
 def first_launch():
-    clear_schema()
-    setup_schema()
-    load_tickers()
+    alembic.config.main(argv=alembicArgs)
+    if get_ticker_names().empty:
+        load_tickers()
