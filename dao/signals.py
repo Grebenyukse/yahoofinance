@@ -1,6 +1,6 @@
 import pandas as pd
 
-from dao.config import engine
+from config import engine
 
 
 def remove_duplicates_signals():

@@ -1,8 +1,15 @@
-from dao.config import engine
+from alembic import op
+import sqlalchemy as sa
+from sqlalchemy.dialects import postgresql
 
-def setup_schema():
-    with engine.begin() as conn:
-        query = f"""
+revision = '0001'
+down_revision = '0000'
+branch_labels = None
+depends_on = None
+
+
+def upgrade():
+    query = f"""
         CREATE TABLE public."EURUSD" (
         "Datetime" timestamptz NULL,
         "Ticker" text NULL,
@@ -35,23 +42,16 @@ def setup_schema():
         );
 
         CREATE TABLE public.tickers (
-        ticker varchar NOT NULL,
-        country varchar NULL,
-        exchange varchar NULL,
-        category varchar NULL
+        "Yahoo" varchar NOT NULL
         );
         """
-        result = conn.execute(query)
-        print(result.rowcount, "Record updated successfully into Signals")
+    op.execute(query)
 
-
-def clear_schema():
-    with engine.begin() as conn:
-        query = """
-        DROP TABLE if exists public."EURUSD" cascade;
+def downgrade():
+    query = """
+        DROP TABLE if exists public.market_data cascade;
         DROP TABLE if exists public.category;
         DROP TABLE if exists public.signals;
         DROP TABLE if exists public.tickers;
         """
-        result = conn.execute(query)
-        print(result.rowcount, "Record updated successfully into Signals")
+    op.execute(query)

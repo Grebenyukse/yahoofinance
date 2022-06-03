@@ -9,8 +9,9 @@ from exchange.yahoo import load_ticker_info
 from expert.fibo import get_fibo_signals
 from plot import render
 from plot.render import plot_candlesticks
+from config import project_path
 
-SCREENSHOT_PATH = "C:\\Users\\admin\\PycharmProjects\\yahoofinance\\plot\\images\\fig.jpeg"
+SCREENSHOT_PATH = project_path + "yahoofinance\\plot\\images\\fig.jpeg"
 
 
 # Загружаем информацию о тикете, проверяем сигнал, постим сигнал в таблицу

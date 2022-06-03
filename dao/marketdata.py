@@ -1,7 +1,7 @@
 from ast import Tuple
 import pandas as pd
 
-from dao.config import engine
+from config import engine
 
 
 def update_market_data(prices):

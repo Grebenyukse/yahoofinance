@@ -1,6 +1,5 @@
 import schedule
 import time
-from dao.setupschema import clear_schema, setup_schema
 from files.get_tickers import load_tickers
 from service.firstlaunch import first_launch
 
@@ -15,11 +14,11 @@ from service.signals import update_signals, publish_alerts
 #     schedule.run_pending()
 #     time.sleep(1)
 
-# first_launch()
 
 
+first_launch()
 print('start update market info')
-# update_market_info()
+update_market_info()
 print('start update signals')
 update_signals()
 print('start sending alerts')

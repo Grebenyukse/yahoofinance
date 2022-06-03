@@ -1,7 +1,7 @@
 import plotly.io as pio
 import pandas as pd
 
-from dao.config import engine
+from config import engine
 
 pio.renderers.default = "browser"
 

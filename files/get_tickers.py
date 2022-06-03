@@ -1,10 +1,11 @@
 import pandas as pd
 
-from dao.config import engine
+from config import engine
+from config import project_path
 
 
 def load_tickers():
-    data = pd.read_excel(io="C:\\Users\\admin\\PycharmProjects\\yahoofinance\\files\\tinka_tickers.xlsx",
+    data = pd.read_excel(io=project_path + "yahoofinance\\files\\tinka_tickers.xlsx",
                          sheet_name=0,
                          header=0,
                          na_filter=True,
