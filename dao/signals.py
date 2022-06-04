@@ -1,26 +1,5 @@
 import pandas as pd
-
 from config import engine
-
-
-def remove_duplicates_signals():
-    with engine.begin() as conn:
-        query = """
-            with cte AS
-            (
-            SELECT data_id,
-                   row_number() OVER (PARTITION BY t."Datetime",
-                                                   t."Ticker"
-                                      ORDER BY t."Ticker") rn
-                   FROM "signals" t
-            )
-            DELETE FROM "signals" t2
-                   USING cte
-                   WHERE cte.rn > 1
-                         AND cte.data_id = t2.data_id;
-        """
-        result = conn.execute(query)
-        print(result.rowcount, "Record updated successfully into EURUSD")
 
 
 def save_signals(signals):
@@ -59,13 +38,17 @@ def get_saved_signals(signal):
     trend = signal['Trend']
     datetime = signal['Datetime']
     ticker = signal['Ticker']
+    criteria = signal['Criteria']
+    expert = signal['Expert']
     with engine.begin() as conn:
         query = f"""
-        select count(*) from "signals" 
-        where "Trend" = '{trend}'
-            and "Ticker" = '{ticker}'
-            and DATE_PART('day', "signals"."Datetime"::timestamp - '{datetime}'::timestamp) < 1
-    """
+            select count(*) from "signals" 
+            where "Trend" = '{trend}'
+                and "Ticker" = '{ticker}'
+                and DATE_PART('day', "signals"."Datetime"::timestamp - '{datetime}'::timestamp) < 1
+                and "Criteria" = '{criteria}'
+                and "Expert" = '{expert}'
+        """
         result = conn.execute(query)
         count = result.fetchone()[0]
         return count

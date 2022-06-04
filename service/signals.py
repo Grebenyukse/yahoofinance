@@ -23,10 +23,11 @@ def update_signals():
         signals = get_fibo_signals(data)
         if signals is None:
             continue
-        signals['filter'] = signals[['Trend', 'Datetime', 'Ticker']]\
+        signals['filter'] = signals[['Trend', 'Datetime', 'Ticker', 'Criteria', 'Expert']]\
             .apply(lambda x: 1 if get_saved_signals(x) == 0 else None, axis=1)
         filtered_signals = signals.dropna(subset=['filter']).drop(labels=['filter'], axis=1)
         if not filtered_signals.empty:
+            print('save signals')
             save_signals(filtered_signals)
 
 
@@ -37,12 +38,11 @@ def publish_alerts():
         return
     for index, x in messages.iterrows():
         market_data = fetch_market_data_for_ticker(x['Ticker'])
-        symbol_info = load_ticker_info(x['Ticker'])
         render_data = get_fibo_signals(market_data, True)
         data, fibo_xaxe, fibo_382, fibo_618, markers, price_open, stop_loss, take_profit, infimum, supremum = render_data
         plot_candlesticks(data, fibo_xaxe, fibo_382, fibo_618, markers, price_open, stop_loss, take_profit, infimum, supremum)
         send_photo(SCREENSHOT_PATH, x['messages'], x['signals_id'])
         os.remove(SCREENSHOT_PATH)
-        # mark_as_published(x['signals_id'])
+        mark_as_published(x['signals_id'])
 
 

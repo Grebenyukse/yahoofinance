@@ -13,3 +13,5 @@ def first_launch():
     alembic.config.main(argv=alembicArgs)
     if get_ticker_names().empty:
         load_tickers()
+    else:
+        print('skip load tickers')
