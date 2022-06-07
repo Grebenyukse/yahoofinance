@@ -87,7 +87,7 @@ def get_fibo_signals(data, render=False):
         price_open = (stop_loss + fibo_382)/2
         result_df = pd.DataFrame(data=[[tickerData.iloc[0]['Ticker'],
                                    tickerData.iloc[right_e_bar]['Datetime'],
-                                   'Fibbo touch 38.2',
+                                   'Fibo touch 38.2',
                                    trend,
                                    touches_382,
                                    'touches:' + str(touches_382) + '.' + get_position_info(price_open, take_profit, stop_loss)]],

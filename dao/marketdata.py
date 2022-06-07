@@ -39,6 +39,7 @@ def fetch_market_data_for_ticker(ticker):
     try:
         query = f"""
         SELECT * FROM "EURUSD" t1 where t1."Ticker" = '{ticker}' 
+        and "Volume" > 0
         ORDER BY "Datetime" desc
         """
         sql_query = pd.read_sql_query(query, engine)
